@@ -1,0 +1,55 @@
+<head>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"
+  ></script>
+</head>
+
+<div class="m-sm-5 row d-flex justify-content-center">
+    <div class="col-md-6">
+      <div class="">
+        <form action="{% url 'todo:add_todo' %}" method="post" >
+          {% csrf_token %}
+          <div class="form-check form-check-inline">
+            <label class="sr-only" for="todo_item">New todo</label>
+            <input
+              type="text"
+              id="todo_item"
+              name="todo_item"
+              class="mb-2"
+            />
+            <input type="submit" value="Submit" class="btn btn-primary mb-2" />
+            <input type="submit" formaction="{% url 'todo:delete_all_todo' %}" method="post" value="Clear All Todos" class="btn btn-primary mb-2" />
+          </div>
+        </form>
+        {% if latest_todo_list %}
+        <ul class="">
+          {% for todo in latest_todo_list %}
+          
+          <li class="list-group-item d-flex ">          
+            <div class="form-check form-check-inline "> 
+            <form action="{% url 'todo:delete_todo' todo.id %}" method="post">
+              <input type="text" value="{{ todo.todo_text }}" name="todo_text" id="todo_text">
+              {% csrf_token %}
+              <input type="submit" value="delete" class="btn btn-primary mb-2 ">
+              <input type="submit" formaction="{% url 'todo:edit_todo' todo.id %}" method="post" value="save changes" class="btn btn-primary mb-2 ">
+          </form>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>You don't have anything to do! Add something to do!</p>
+        {% endif %}
+      </div>
+    </div>
+
+    </div>
+      
+</div>
